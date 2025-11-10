@@ -1,0 +1,213 @@
+﻿
+@page
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@model TechBayV01.Pages.choose_role.choose_roleModel
+@{
+    ViewData["Title"] = "Escolha seu Perfil";
+    Layout = "_LayoutLogin";
+}
+
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seleção de Perfil - TechBay</title>
+    <style>
+        /* Animações personalizadas */
+        .role-card {
+            transition: all 0.3s ease;
+        }
+
+        .role-card:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        .role-card:active {
+            transform: translateY(-3px) scale(1.02);
+        }
+
+        .role-card .card-overlay {
+            transition: background-color 0.3s ease;
+        }
+
+        .role-card:hover .card-overlay {
+            background-color: transparent;
+        }
+
+        .role-card .icon-bg,
+        .role-card .select-btn {
+            transition: all 0.3s ease;
+        }
+
+        .role-card:hover .icon-bg,
+        .role-card:hover .select-btn {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .selection-message {
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100">
+    <div class="min-h-screen flex items-center justify-center p-4">
+        <div class="w-full max-w-5xl">
+
+            @if (SignInManager.IsSignedIn(User))
+            {
+                
+                <li class="nav-item">
+                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
+                        <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                    </form>
+                </li>
+            }
+           
+            <!-- Header com Logo -->
+            <div class="text-center mb-12">
+               
+                    <div class="mb-8 flex justify-center">
+
+                        <img src="~/img/logo_transparent_background.png" alt="TechBay Logo" class="mb-4 w-60 h-auto" alt="TechBay Logo" />
+                    </div>
+
+                <h1 class="text-4xl font-medium text-slate-900 mb-3">
+                    Bem-vindo ao <span class="text-blue-600">TechBay</span>
+                </h1>
+                <p class="text-base text-slate-600 max-w-2xl mx-auto">
+                    Para continuar, escolha como você deseja usar nossa plataforma de e-commerce de produtos eletrônicos
+                </p>
+            </div>
+
+            <!-- Cards de Seleção -->
+            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+
+                <!-- Card Comprador -->
+                <button onclick="selectRole('comprador')" data-modal-target="popup-modal" data-modal-toggle="popup-modal" type="button"
+                        class="role-card relative overflow-hidden rounded-2xl p-8 bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700 shadow-xl min-h-[280px] flex flex-col items-center justify-center text-center group">
+                    <div class="card-overlay absolute inset-0 bg-black/5"></div>
+
+                    <div class="relative z-10 flex flex-col items-center gap-4">
+                        <div class="icon-bg bg-white/20 backdrop-blur-sm rounded-full p-6">
+                            <!-- Ícone Shopping Cart (Lucide) -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white">
+                                <circle cx="8" cy="21" r="1" />
+                                <circle cx="19" cy="21" r="1" />
+                                <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
+                            </svg>
+                        </div>
+
+                        <div class="space-y-2">
+                            <h2 class="text-2xl font-medium text-white">Comprador</h2>
+                            <p class="text-base text-white/90 max-w-xs">
+                                Explore e compre os melhores produtos eletrônicos com segurança e qualidade
+                            </p>
+                        </div>
+
+                        <div class="select-btn mt-4 px-6 py-2 bg-white/20 backdrop-blur-sm rounded-full text-base text-white font-medium">
+                            Selecionar
+                        </div>
+                    </div>
+                </button>
+
+                <!-- Card Vendedor -->
+                <button onclick="selectRole('vendedor')"
+                        class="role-card relative overflow-hidden rounded-2xl p-8 bg-gradient-to-br from-slate-700 via-slate-800 to-black shadow-xl min-h-[280px] flex flex-col items-center justify-center text-center group">
+                    <div class="card-overlay absolute inset-0 bg-black/5"></div>
+
+                    <div class="relative z-10 flex flex-col items-center gap-4">
+                        <div class="icon-bg bg-white/20 backdrop-blur-sm rounded-full p-6">
+                            <!-- Ícone Store (Lucide) -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white">
+                                <path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7" />
+                                <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+                                <path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4" />
+                                <path d="M2 7h20" />
+                                <path d="M22 7v3a2 2 0 0 1-2 2v0a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12v0a2 2 0 0 1-2-2V7" />
+                            </svg>
+                        </div>
+
+                        <div class="space-y-2">
+                            <h2 class="text-2xl font-medium text-white">Vendedor</h2>
+                            <p class="text-base text-white/90 max-w-xs">
+                                Venda seus produtos eletrônicos e alcance milhares de clientes em todo o país
+                            </p>
+                        </div>
+
+                        <div class="select-btn mt-4 px-6 py-2 bg-white/20 backdrop-blur-sm rounded-full text-base text-white font-medium">
+                            Selecionar
+                        </div>
+                    </div>
+                </button>
+
+                <!--Modal de confirmação-->
+                 <div id="popup-modal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                    <div class="relative p-4 w-full max-w-md max-h-full">
+                        <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
+                            <button type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="popup-modal">
+                                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                </svg>
+                                <span class="sr-only">Close modal</span>
+                            </button>
+                            <div class="p-4 md:p-5 text-center">
+                                <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                </svg>
+                                <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Tem certeza de que deseja continuar como comprador?</h3>
+                                <button data-modal-hide="popup-modal" type="button" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
+                                    Sim, continuar
+                                </button>
+                                <button data-modal-hide="popup-modal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Não, cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Mensagem de Seleção (oculta por padrão) -->
+            <div id="selectionMessage" class="mt-8 text-center hidden">
+                <div class="selection-message inline-block bg-white rounded-lg shadow-md px-6 py-3">
+                    <p class="text-base text-slate-700">
+                        Você selecionou: <span id="selectedRole" class="text-blue-600 font-medium"></span>
+                    </p>
+                </div>
+            </div>
+
+           
+
+        </div>
+    </div>
+
+    <script>
+        function selectRole(role) {
+            // Atualiza a mensagem
+            const messageDiv = document.getElementById('selectionMessage');
+            const roleSpan = document.getElementById('selectedRole');
+
+            roleSpan.textContent = role;
+            messageDiv.classList.remove('hidden');
+
+            // Aqui você pode adicionar a lógica de redirecionamento
+            console.log('Usuário selecionou:', role);
+
+            // Exemplo de redirecionamento após 1 segundo:
+            // setTimeout(() => {
+            //     if (role === 'comprador') {
+            //         window.location.href = '/Dashboard/Comprador';
+            //     } else {
+            //         window.location.href = '/Dashboard/Vendedor';
+            //     }
+            // }, 1000);
+        }
+    </script>
+</body>
+</html>
