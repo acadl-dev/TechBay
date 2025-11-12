@@ -8,13 +8,13 @@ var builder = WebApplication.CreateBuilder(args);
 // ============================================================================
 // CONFIGURACAO DO BANCO DE DADOS
 // ============================================================================
-// Obt�m a connection string do appsettings.json
-// Se n�o encontrar, lan�a uma exce��o para evitar erro em runtime
+// Obtém a connection string do appsettings.json
+// Se não encontrar, lança uma exceção para evitar erro em runtime
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
 // Configura o Entity Framework Core para usar SQL Server
-// DbTechBayV01DbContext � o contexto que gerencia as entidades do banco
+// DbTechBayV01DbContext é o contexto que gerencia as entidades do banco
 builder.Services.AddDbContext<DbTechBayV01DbContext>(options =>
     options.UseSqlServer(connectionString));
 
@@ -22,52 +22,54 @@ builder.Services.AddDbContext<DbTechBayV01DbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 // ============================================================================
-// CONFIGURA��O DO SISTEMA DE AUTENTICA��O (ASP.NET IDENTITY)
+// CONFIGURAÇÃO
+// DO SISTEMA DE AUTENTICAÇÃO (ASP.NET IDENTITY)
 // ============================================================================
-// Configura o Identity para gerenciar usu�rios, senhas, login, etc
-// RequireConfirmedAccount = true: usu�rio PRECISA confirmar email antes de fazer login
+// Configura o Identity para gerenciar usuários, senhas, login, etc
+// RequireConfirmedAccount = true: usuário PRECISA confirmar email antes de fazer login
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
     options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<DbTechBayV01DbContext>(); // Armazena dados de usu�rios no banco configurado
+    .AddRoles<IdentityRole>() // Importante para habilitar o uso de Roles
+    .AddEntityFrameworkStores<DbTechBayV01DbContext>(); // Armazena dados de usuários no banco configurado
 
 // ============================================================================
-// CONFIGURA��O DAS RAZOR PAGES
+// CONFIGURAÇÃO DAS RAZOR PAGES
 // ============================================================================
 builder.Services.AddRazorPages();
 
-// IMPORTANTE: Configura pol�tica de seguran�a global
-// Todas as p�ginas da aplica��o exigem usu�rio autenticado (logado)
-// Exce��o: p�ginas do Identity (Login, Register, etc) s�o liberadas automaticamente
+// IMPORTANTE: Configura política de segurança global
+// Todas as páginas da aplicação exigem usuário autenticado (logado)
+// Exceção: páginas do Identity (Login, Register, etc) são liberadas automaticamente
 builder.Services.AddRazorPages(options => {
-    // Cria uma pol�tica que exige usu�rio autenticado
+    // Cria uma política que exige usu�rio autenticado
     var policy = new AuthorizationPolicyBuilder()
         .RequireAuthenticatedUser()
         .Build();
 
-    // Aplica a pol�tica a TODAS as p�ginas da raiz "/"
+    // Aplica a política a TODAS as páginas da raiz "/"
     options.Conventions.AuthorizeFolder("/");
 });
 
-// Configura o comportamento do cookie de autentica��o
-// Define para onde redirecionar usu�rios n�o autenticados
+// Configura o comportamento do cookie de autenticação
+// Define para onde redirecionar usuários não autenticados
 builder.Services.ConfigureApplicationCookie(options => {
-    options.LoginPath = "/Identity/Account/Login";   // P�gina de login padr�o
+    options.LoginPath = "/Identity/Account/Login";   // Página de login padrão
 });
 
 // ============================================================================
-// BUILD DA APLICA��O
+// BUILD DA APLICAÇÃO
 // ============================================================================
 var app = builder.Build();
 
 // ============================================================================
-// CONFIGURA��O DO PIPELINE HTTP (MIDDLEWARE)
+// CONFIGURAÇÃO DO PIPELINE HTTP (MIDDLEWARE)
 // ============================================================================
-// Em desenvolvimento: mostra p�gina detalhada de erros de migration
+// Em desenvolvimento: mostra página detalhada de erros de migration
 if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
 }
-// Em produ��o: redireciona para p�gina de erro gen�rica
+// Em produção: redireciona para página de erro genérica
 else
 {
     app.UseExceptionHandler("/Error");
@@ -80,50 +82,48 @@ app.UseStaticFiles();
 app.UseRouting();
 
 // ORDEM CR�TICA: Authentication ANTES de Authorization
-// Authentication: identifica QUEM � o usu�rio
+// Authentication: identifica QUEM é o usuário
 app.UseAuthentication();
 
-// Authorization: verifica se o usu�rio TEM PERMISS�O para acessar o recurso
+// Authorization: verifica se o usuário TEM PERMISS�O para acessar o recurso
 app.UseAuthorization();
 
 // Mapeia as Razor Pages para as rotas correspondentes
 app.MapRazorPages();
 
+await CriarRolesPadraoAsync(app);
+
 // ============================================================================
 // ROTA PERSONALIZADA PARA A RAIZ "/"
 // ============================================================================
-// Quando usu�rio acessa "/" (raiz), redireciona para "/choose_role"
-// NOTA: S� chega aqui se estiver autenticado (devido � pol�tica global)
+// Quando usuário acessa "/" (raiz), redireciona para "/choose_role"
+// NOTA: Só chega aqui se estiver autenticado (devido á política global)
 app.MapGet("/", context => {
     context.Response.Redirect("/choose_role");
     return Task.CompletedTask;
 });
 
 
-// INICIALIZAR AS ROLES COMPRADOR E VENDEDOR
-async Task CreateRoles(IServiceProvider serviceProvider)
-{
-    var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-    string[] roleNames = { "Vendedor", "Comprador" };
 
-    foreach (var roleName in roleNames)
+// ============================================================================
+// INICIA A APLICAÇÃO
+// ============================================================================
+app.Run();
+
+// CRIA AS ROLES ATRAVÉS DO IDENTITY, APÓS RODAR A PRIMEIRA VEZ PODE SER RETIRADO
+async Task CriarRolesPadraoAsync(WebApplication app)
+{
+    using var scope = app.Services.CreateScope();
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+
+    string[] roles = { "Comprador", "Vendedor" };
+
+    foreach (var role in roles)
     {
-        var roleExist = await roleManager.RoleExistsAsync(roleName);
-        if (!roleExist)
+        if (!await roleManager.RoleExistsAsync(role))
         {
-            await roleManager.CreateAsync(new IdentityRole(roleName));
+            await roleManager.CreateAsync(new IdentityRole(role));
         }
     }
 }
-
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    await CreateRoles(services);
-}
-
-
-// ============================================================================
-// INICIA A APLICA��O
-// ============================================================================
-app.Run();
