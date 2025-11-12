@@ -6,7 +6,7 @@ using TechBayV01.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 // ============================================================================
-// CONFIGURA��O DO BANCO DE DADOS
+// CONFIGURACAO DO BANCO DE DADOS
 // ============================================================================
 // Obt�m a connection string do appsettings.json
 // Se n�o encontrar, lan�a uma exce��o para evitar erro em runtime
@@ -98,6 +98,30 @@ app.MapGet("/", context => {
     context.Response.Redirect("/choose_role");
     return Task.CompletedTask;
 });
+
+
+// INICIALIZAR AS ROLES COMPRADOR E VENDEDOR
+async Task CreateRoles(IServiceProvider serviceProvider)
+{
+    var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    string[] roleNames = { "Vendedor", "Comprador" };
+
+    foreach (var roleName in roleNames)
+    {
+        var roleExist = await roleManager.RoleExistsAsync(roleName);
+        if (!roleExist)
+        {
+            await roleManager.CreateAsync(new IdentityRole(roleName));
+        }
+    }
+}
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    await CreateRoles(services);
+}
+
 
 // ============================================================================
 // INICIA A APLICA��O
