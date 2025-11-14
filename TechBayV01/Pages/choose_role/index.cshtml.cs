@@ -10,10 +10,12 @@ namespace TechBayV01.Pages.choose_role
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
+
         public choose_roleModel(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+
         }
 
         [BindProperty]
@@ -46,7 +48,8 @@ namespace TechBayV01.Pages.choose_role
                 {
                     Console.WriteLine($"Erro ao adicionar role: {error.Code} - {error.Description}");
                 }
-                return Page(); // volta pra página com erro
+                Console.WriteLine("Vai redirecionar...");
+                return RedirectToPage("/vendedor/index"); // volta pra página com erro
             } else
             {
                 Console.WriteLine("Sucesso ao associar usuário à role.");
@@ -54,9 +57,15 @@ namespace TechBayV01.Pages.choose_role
 
             // Redireciona conforme a role escolhida
             if (SelectedRole == "comprador")
-                return RedirectToPage("/Dashboard/Comprador");
+            {
+                Console.WriteLine("Sucesso ao associar usuário à role.");
+                return RedirectToPage("/vendedor");
+            }
             else
-                return RedirectToPage("/Dashboard/Vendedor");
+            {
+                Console.WriteLine("Sucesso ao associar usuário à role.");
+                return RedirectToPage("/vendedor");
+            }
         }
     }
 }
