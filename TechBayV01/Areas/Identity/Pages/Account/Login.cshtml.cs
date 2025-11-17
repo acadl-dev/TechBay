@@ -20,11 +20,13 @@ namespace TechBayV01.Areas.Identity.Pages.Account
     public class LoginModel : PageModel
     {
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;   // <<< ADICIONADO, vamos usar para ajustar o redirecionamento após o logi
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager, ILogger<LoginModel> logger)
         {
             _signInManager = signInManager;
+            _userManager = userManager; // <<< ADICIONADO, vamos usar para ajustar o redirecionamento após o logi
             _logger = logger;
         }
 
@@ -113,11 +115,36 @@ namespace TechBayV01.Areas.Identity.Pages.Account
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+
+                // SE LOGIN OK ✔
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User logged in.");
+                    var user = await _userManager.FindByEmailAsync(Input.Email);
+                    var roles = await _userManager.GetRolesAsync(user);
+
+                    // Usuário logou mas ainda não escolheu role
+                    if (roles.Count == 0)
+                    {
+                        return RedirectToPage("/choose_role");
+                    }
+
+                    // Usuário é vendedor
+                    if (roles.Contains("Vendedor"))
+                    {
+                        return LocalRedirect("/dashboard_vendedor");
+                    }
+
+                    // Usuário é comprador
+                    if (roles.Contains("Comprador"))
+                    {
+                        return LocalRedirect("/vendedor");
+                    }
+
+                    // Fallback: volta ao retorno original
                     return LocalRedirect(returnUrl);
                 }
+
+
                 if (result.RequiresTwoFactor)
                 {
                     return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });

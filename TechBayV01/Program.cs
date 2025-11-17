@@ -98,10 +98,10 @@ await CriarRolesPadraoAsync(app);
 // ============================================================================
 // Quando usuário acessa "/" (raiz), redireciona para "/choose_role"
 // NOTA: Só chega aqui se estiver autenticado (devido á política global)
-app.MapGet("/", context => {
-    context.Response.Redirect("/choose_role");
-    return Task.CompletedTask;
-});
+//app.MapGet("/", context => {
+//    context.Response.Redirect("/choose_role");
+//    return Task.CompletedTask;
+//});
 
 
 
