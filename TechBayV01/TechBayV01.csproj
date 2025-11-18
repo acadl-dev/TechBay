@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <Compile Include="Pages\Shared\_LayoutLogin.cshtml.css" />
+    <Compile Include="Pages\Shared\_LayoutVendedor.cshtml.css" />
   </ItemGroup>
 
   <ItemGroup>
