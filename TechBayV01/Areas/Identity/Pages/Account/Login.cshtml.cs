@@ -125,19 +125,19 @@ namespace TechBayV01.Areas.Identity.Pages.Account
                     // Usuário logou mas ainda não escolheu role
                     if (roles.Count == 0)
                     {
-                        return RedirectToPage("/choose_role");
+                        return RedirectToPage("/choose_role/index");
                     }
 
                     // Usuário é vendedor
                     if (roles.Contains("Vendedor"))
                     {
-                        return LocalRedirect("/dashboard_vendedor");
+                        return LocalRedirect("/vendedor");
                     }
 
                     // Usuário é comprador
                     if (roles.Contains("Comprador"))
                     {
-                        return LocalRedirect("/vendedor");
+                        return LocalRedirect("/comprador");
                     }
 
                     // Fallback: volta ao retorno original

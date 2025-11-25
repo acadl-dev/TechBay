@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using TechBayV01.Models;
 
 namespace TechBayV01.Data
 {
@@ -9,5 +10,7 @@ namespace TechBayV01.Data
             : base(options)
         {
         }
+
+        public DbSet<Produto> Produto { get; set; }
     }
 }

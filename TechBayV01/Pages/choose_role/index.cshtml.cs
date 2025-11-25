@@ -59,7 +59,7 @@ namespace TechBayV01.Pages.choose_role
             if (SelectedRole == "comprador")
             {
                 Console.WriteLine("Sucesso ao associar usuário à role.");
-                return RedirectToPage("/vendedor");
+                return RedirectToPage("/comprador");
             }
             else
             {
