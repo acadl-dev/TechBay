@@ -4,6 +4,7 @@
 O sistema permite que o usuário atue tanto como **vendedor** quanto como **comprador**, oferecendo uma experiência completa de marketplace.
 
 [Documento de Especificação de Requisitos](https://docs.google.com/document/d/1J_LONfgWOgjPTzsTTBuO8A9_g_1l9m_W4sDKiDV3ItE/edit?usp=sharing)
+
 [Trello: planejamento e execução](https://trello.com/b/YGKhlZHh/planejamento-techbay)
 
 
