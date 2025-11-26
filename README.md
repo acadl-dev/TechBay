@@ -51,10 +51,8 @@ TechBay/
 ### Instalação
 ```bash
 # Clone o repositório
-git clone https://github.com/acadl-dev/DotNetWebTP3-ASP.NET-Core-Razor-Pages.git
+git clone https://github.com/acadl-dev/TechBay.git
 
-# Navegue até o diretório
-cd CityBreaks.Web/
 
 # Configure a string de conexão
 Edite o arquivo appsettings.json e configure a connection string do banco de dados:

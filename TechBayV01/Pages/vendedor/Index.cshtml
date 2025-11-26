@@ -21,7 +21,7 @@
             <input type="text" placeholder="Search your query" class="bg-transparent text-white text-sm placeholder-white/50 outline-none flex-1">
         </div>
 
-        <!-- Notification -->
+        <!-- Notificação -->
         <button class="relative p-2 bg-white/10 backdrop-blur-sm rounded-lg hover:bg-white/20 transition">
             <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
@@ -39,25 +39,23 @@
     </div>
 </header>
 
-<!-- Main Content -->
+<!-- Conteúdo principal -->
 <div class="flex-1 overflow-y-auto min-h-screen">
    
-    <!-- Products Table -->
+    <!-- Produtos da tabela -->
     <div class="bg-white rounded-3xl shadow-xl p-6">
         <div class="flex items-center justify-between mb-6">
             <h2 class="text-2xl font-bold text-gray-800">Seus Produtos</h2>
             <div class="flex items-center space-x-4">
                 <p class="text-gray-600">Total de 156 produtos cadastrados</p>
-                <button class="bg-[#118EBF] hover:bg-[#0d6f96] text-white font-semibold px-6 py-3 rounded-xl shadow-lg flex items-center transition-all">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                    </svg>
-                    Novo Produto
+               
+                <button data-modal-target="crud-modal" data-modal-toggle="crud-modal" class="bg-[#118EBF] hover:bg-[#0d6f96] text-white font-semibold px-6 py-3 rounded-xl shadow-lg flex items-center transition-all" type="button">
+                    <i class="fa-solid fa-plus mr-2" style="color: #ffffff;"></i> Novo Produto
                 </button>
             </div>
         </div>
 
-        <!-- Search and Filter -->
+        <!-- Filtro de busca -->
         <div class="flex items-center space-x-4 mb-6">
             <div class="flex-1 relative">
                 <input type="text" placeholder="Buscar produtos..." class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#118EBF] focus:border-transparent">
@@ -71,9 +69,10 @@
                 </svg>
                 Filtrar
             </button>
+            
         </div>
 
-        <!-- Table -->
+        <!-- Tabela -->
         <div class="overflow-x-auto">
             <table class="w-full">
                 <thead>
@@ -216,7 +215,7 @@
             </table>
         </div>
 
-        <!-- Pagination -->
+        <!-- Paginação -->
         <div class="flex items-center justify-between mt-6">
             <p class="text-gray-600">Mostrando 1-4 de 156 produtos</p>
             <div class="flex items-center space-x-2">
@@ -228,6 +227,143 @@
             </div>
         </div>
     </div>
+    
+    <!-- Modal Overlay -->
+    <div id="modalOverlay" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm hidden z-40 transition-opacity duration-300"></div>
+   
+    <!-- Modal para adicionar novo produto -->
+    <div id="crud-modal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+        <div class="flex min-h-full items-center justify-center p-4">
+            <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg transform transition-all duration-300 scale-95 opacity-0" id="modalContent">
+
+                <!-- Header -->
+                <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-900">Criar novo produto</h2>
+                        <p class="text-sm text-gray-500 mt-1">Preencha as informações do produto</p>
+                    </div>
+                    <button data-modal-hide="crud-modal" class="text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full p-2 transition-colors duration-200">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Body -->
+                <form method="post" id="productForm" class="p-6 space-y-5">
+                    <!-- <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div> aqui eu posso usar para trazer mensagens de erro do data annotations, como número de caracteres inválidos--> 
+
+                    <!-- Upload de Imagem -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            Imagem do Produto
+                        </label>
+                        <div class="flex items-center justify-center w-full">
+                            <label for="productImage" class="flex flex-col items-center justify-center w-full h-40 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-all duration-200">
+                                <div class="flex flex-col items-center justify-center pt-5 pb-6" id="uploadPlaceholder">
+                                    <svg class="w-10 h-10 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                    </svg>
+                                    <p class="mb-2 text-sm text-gray-500"><span class="font-semibold">Clique para fazer upload</span> ou arraste a imagem</p>
+                                    <p class="text-xs text-gray-500">PNG, JPG ou JPEG (MAX. 5MB)</p>
+                                </div>
+                                <img id="imagePreview" class="hidden w-full h-full object-cover rounded-lg" alt="Preview">
+                                <input id="productImage" type="file" class="hidden" accept="image/png, image/jpeg, image/jpg" />
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Nome do Produto -->
+                    <div>
+                        <label for="productName" class="block text-sm font-semibold text-gray-700 mb-2">
+                            Nome do Produto
+                        </label>
+                        <input type="text"
+                               id="productName"
+                               placeholder="Ex: iPhone 15 Pro Max"
+                               class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 outline-none"
+                               required>
+                    </div>
+
+                    <!-- Descrição -->
+                    <div>
+                        <label for="productDescription" class="block text-sm font-semibold text-gray-700 mb-2">
+                            Descrição do Produto
+                        </label>
+                        <textarea id="productDescription"
+                                  rows="3"
+                                  placeholder="Descreva as características e detalhes do produto..."
+                                  class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 outline-none resize-none"></textarea>
+                    </div>
+
+                    <!-- Grid: Preço, Quantidade e Status -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <!-- Preço Unitário -->
+                        <div>
+                            <label for="productPrice" class="block text-sm font-semibold text-gray-700 mb-2">
+                                Preço Unitário
+                            </label>
+                            <div class="relative">
+                                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-medium">R$</span>
+                                <input type="number"
+                                       id="productPrice"
+                                       placeholder="99.90"
+                                       step="0.01"
+                                       min="0"
+                                       class="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 outline-none"
+                                       required>
+                            </div>
+                        </div>
+
+                        <!-- Quantidade -->
+                        <div>
+                            <label for="productQuantity" class="block text-sm font-semibold text-gray-700 mb-2">
+                                Quantidade
+                            </label>
+                            <input type="number"
+                                   id="productQuantity"
+                                   placeholder="10"
+                                   min="0"
+                                   class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 outline-none"
+                                   required>
+                        </div>
+
+                        <!-- Status -->
+                        <div>
+                            <label for="productStatus" class="block text-sm font-semibold text-gray-700 mb-2">
+                                Status
+                            </label>
+                            <select id="productStatus"
+                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 outline-none appearance-none cursor-pointer"
+                                    required>
+                                <option value="active">Ativo</option>
+                                <option value="inactive">Inativo</option>
+                                <option value="out_of_stock">Sem Estoque</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Footer com Botões -->
+                    <div class="flex flex-col sm:flex-row gap-3 pt-4 border-t border-gray-200">
+                        <button type="submit"
+                                class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                            </svg>
+                            Adicionar Produto
+                        </button>
+                        <button type="button"
+                                data-modal-hide="crud-modal"
+                                class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold px-6 py-3 rounded-lg transition-all duration-200">
+                            Cancelar
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
 </div>
 @section Scripts {
     <script>
@@ -284,5 +420,72 @@
                 ctx.fillText(label, 40, (height / 4) * (i + 1));
             });
         }
+    </script>
+    <script>
+        const modal = document.getElementById('crud-modal');
+        const overlay = document.getElementById('modalOverlay');
+        const modalContent = document.getElementById('modalContent');
+        const form = document.getElementById('productForm');
+
+        // Função para abrir o modal (compatível com Flowbite)
+        function openModal() {
+            modal.classList.remove('hidden');
+            overlay.classList.remove('hidden');
+
+            setTimeout(() => {
+                overlay.classList.add('opacity-100');
+                modalContent.classList.remove('scale-95', 'opacity-0');
+                modalContent.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+
+        // Função para fechar o modal (compatível com Flowbite)
+        function closeModal() {
+            modalContent.classList.remove('scale-100', 'opacity-100');
+            modalContent.classList.add('scale-95', 'opacity-0');
+            overlay.classList.remove('opacity-100');
+
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                overlay.classList.add('hidden');
+                form.reset();
+            }, 300);
+        }
+
+        // Event listeners para data-modal-toggle (Flowbite)
+        document.querySelectorAll('[data-modal-toggle="crud-modal"]').forEach(button => {
+            button.addEventListener('click', openModal);
+        });
+
+        // Event listeners para data-modal-hide (Flowbite)
+        document.querySelectorAll('[data-modal-hide="crud-modal"]').forEach(button => {
+            button.addEventListener('click', closeModal);
+        });
+
+        // Fechar modal ao clicar no overlay
+        overlay.addEventListener('click', closeModal);
+
+        // Fechar modal com tecla ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                closeModal();
+            }
+        });
+
+        // Handler do formulário
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const product = {
+                name: document.getElementById('productName').value,
+                price: document.getElementById('productPrice').value,
+                category: document.getElementById('productCategory').value,
+                description: document.getElementById('productDescription').value
+            };
+
+            console.log('Produto criado:', product);
+            alert('Produto adicionado com sucesso!');
+            closeModal();
+        });
     </script>
 }
