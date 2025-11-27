@@ -3,20 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TechBayV01.Data;
 
 #nullable disable
 
-namespace TechBayV01.Data.Migrations
+namespace TechBayV01.Migrations
 {
     [DbContext(typeof(DbTechBayV01DbContext))]
-    [Migration("20251126012739_ajustesNoProduto")]
-    partial class ajustesNoProduto
+    partial class DbTechBayV01DbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -270,7 +267,7 @@ namespace TechBayV01.Data.Migrations
                     b.Property<DateTime>("DataCadastro")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DataModificação")
+                    b.Property<DateTime>("DataModificacao")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DeletedAt")
@@ -292,6 +289,9 @@ namespace TechBayV01.Data.Migrations
 
                     b.Property<decimal>("PrecoUnitario")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<float>("Quantidade")
+                        .HasColumnType("real");
 
                     b.Property<string>("Status")
                         .IsRequired()

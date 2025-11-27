@@ -11,7 +11,7 @@
         public float Quantidade { get; set; }
 
         public DateTime DataCadastro { get; set; } = DateTime.Now;
-        public DateTime DataModificação { get; set; }
+        public DateTime DataModificacao { get; set; }
         public bool IsDeleted { get; set; } = false;
         public DateTime? DeletedAt { get; set; }
 
