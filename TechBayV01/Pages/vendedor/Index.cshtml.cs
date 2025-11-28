@@ -1,6 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 using TechBayV01.Data;
+using TechBayV01.Models;
+
 
 namespace TechBayV01.Pages.vendedor
 {
@@ -13,8 +17,10 @@ namespace TechBayV01.Pages.vendedor
             {
             _context = context;
         }
-        public void OnGet()
+        public IList<Produto> Produtos { get; set; } = default!;
+        public async Task OnGetAsync()
         {
+            Produtos = await _context.Produto.ToListAsync();
         }
 
         [BindProperty]
@@ -22,6 +28,9 @@ namespace TechBayV01.Pages.vendedor
 
         public async Task<IActionResult> OnPostAsync()
         {
+            var json = JsonSerializer.Serialize(Produto);
+            Console.WriteLine("[DEBUG PRODUTO] " + json);
+
             if (!ModelState.IsValid)
             {
                 return Page();
@@ -43,7 +52,7 @@ namespace TechBayV01.Pages.vendedor
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError(string.Empty, "Ocorreu um erro ao salvar o cliente. Tente novamente.");
+                ModelState.AddModelError(string.Empty, "Ocorreu um erro ao salvar o produto. Tente novamente.");
                 return Page();
             }
 
