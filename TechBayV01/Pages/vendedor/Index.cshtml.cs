@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -12,15 +13,21 @@ namespace TechBayV01.Pages.vendedor
     {
         // recebe o dbcontext via injeção de dependência e guarda para usar nos métodos da página
         private readonly DbTechBayV01DbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public IndexModel(DbTechBayV01DbContext context)
+        public IndexModel(DbTechBayV01DbContext context, UserManager<IdentityUser> userManager)
             {
             _context = context;
+            _userManager = userManager;
         }
         public IList<Produto> Produtos { get; set; } = default!;
         public async Task OnGetAsync()
         {
-            Produtos = await _context.Produto.ToListAsync();
+            var user = await _userManager.GetUserAsync(User);
+
+            Produtos = await _context.Produto
+                .Where(p => p.VendedorId == user.Id)   // mostra apenas produtos do vendedor
+                .ToListAsync();
         }
 
         [BindProperty]
@@ -29,6 +36,8 @@ namespace TechBayV01.Pages.vendedor
         public async Task<IActionResult> OnPostAsync()
         {
             var json = JsonSerializer.Serialize(Produto);
+            var user = await _userManager.GetUserAsync(User);
+
             Console.WriteLine("[DEBUG PRODUTO] " + json);
 
             if (!ModelState.IsValid)
@@ -41,6 +50,8 @@ namespace TechBayV01.Pages.vendedor
                 // Define a data de cadastro no momento da criação
                 Produto.DataCadastro = DateTime.Now;
                 Produto.DataModificacao = DateTime.Now;
+
+                Produto.VendedorId = user.Id;   //associa o produto ao vendedor logado
 
                 _context.Produto.Add(Produto);
                 await _context.SaveChangesAsync();

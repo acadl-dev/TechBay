@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TechBayV01.Data;
 
@@ -11,9 +12,11 @@ using TechBayV01.Data;
 namespace TechBayV01.Migrations
 {
     [DbContext(typeof(DbTechBayV01DbContext))]
-    partial class DbTechBayV01DbContextModelSnapshot : ModelSnapshot
+    [Migration("20251130215701_AddVendedorToProduto")]
+    partial class AddVendedorToProduto
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

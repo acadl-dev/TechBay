@@ -1,4 +1,6 @@
-﻿namespace TechBayV01.Models
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace TechBayV01.Models
 {
     public class Produto
     {
@@ -16,5 +18,8 @@
         public DateTime? DeletedAt { get; set; }
 
         public Pedido? Pedido { get; set; }
+
+        public string? VendedorId { get; set; } // Armazena o ID do vendedor, usado em filtros e queries, cria um campo na tabela
+        public IdentityUser? Vendedor { get; set; } // Permite acessar dados do vendedor e usar Include, não cria campo na tabela
     }
 }

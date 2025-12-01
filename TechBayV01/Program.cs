@@ -18,7 +18,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<DbTechBayV01DbContext>(options =>
     options.UseSqlServer(connectionString));
 
-// Adiciona p�gina especial para exibir erros de migration em desenvolvimento
+// Adiciona página especial para exibir erros de migration em desenvolvimento
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 // ============================================================================
@@ -41,7 +41,7 @@ builder.Services.AddRazorPages();
 // Todas as páginas da aplicação exigem usuário autenticado (logado)
 // Exceção: páginas do Identity (Login, Register, etc) são liberadas automaticamente
 builder.Services.AddRazorPages(options => {
-    // Cria uma política que exige usu�rio autenticado
+    // Cria uma política que exige usuário autenticado
     var policy = new AuthorizationPolicyBuilder()
         .RequireAuthenticatedUser()
         .Build();

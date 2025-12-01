@@ -49,7 +49,7 @@ namespace TechBayV01.Pages.choose_role
                     Console.WriteLine($"Erro ao adicionar role: {error.Code} - {error.Description}");
                 }
                 Console.WriteLine("Vai redirecionar...");
-                return RedirectToPage("/vendedor/index"); // volta pra página com erro
+                return RedirectToPage("/vendedor/Index"); // volta pra página com erro
             } else
             {
                 Console.WriteLine("Sucesso ao associar usuário à role.");
@@ -64,7 +64,7 @@ namespace TechBayV01.Pages.choose_role
             else
             {
                 Console.WriteLine("Sucesso ao associar usuário à role.");
-                return RedirectToPage("/vendedor");
+                return RedirectToPage("/vendedor/Index");
             }
         }
     }

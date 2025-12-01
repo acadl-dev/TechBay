@@ -12,8 +12,8 @@ using TechBayV01.Data;
 namespace TechBayV01.Migrations
 {
     [DbContext(typeof(DbTechBayV01DbContext))]
-    [Migration("20251127024601_Primeira migration")]
-    partial class Primeiramigration
+    [Migration("20251130215837_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -300,7 +300,12 @@ namespace TechBayV01.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("VendedorId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("VendedorId");
 
                     b.ToTable("Produto");
                 });
@@ -365,6 +370,15 @@ namespace TechBayV01.Migrations
                         .IsRequired();
 
                     b.Navigation("Produto");
+                });
+
+            modelBuilder.Entity("TechBayV01.Models.Produto", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Vendedor")
+                        .WithMany()
+                        .HasForeignKey("VendedorId");
+
+                    b.Navigation("Vendedor");
                 });
 
             modelBuilder.Entity("TechBayV01.Models.Produto", b =>
