@@ -62,18 +62,19 @@
 
             @if (SignInManager.IsSignedIn(User))
             {
-                
-                <li class="nav-item">
+
+                <div class="fixed top-6 right-6 z-50">
                     <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
-                        <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                        <button type="submit" class="group flex items-center gap-2 px-5 py-2.5 bg-white/90 backdrop-blur-sm hover:bg-white text-slate-700 hover:text-red-600 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 border border-slate-200 hover:border-red-300"><i class="fa-solid fa-arrow-right-from-bracket fa-lg pl-2"></i>Logout</button>
                     </form>
-                </li>
+                </div>
+                
             }
            
             <!-- Header com Logo -->
             <div class="text-center mb-12">
                
-                    <div class="mb-8 flex justify-center">
+                    <div class="mb-2 flex justify-center">
 
                         <img src="~/img/logo_transparent_background.png" alt="TechBay Logo" class="mb-4 w-60 h-auto" alt="TechBay Logo" />
                     </div>
@@ -91,7 +92,7 @@
 
                 <!-- Card Comprador -->
                 <button onclick="selectRole('comprador')" data-modal-target="popup-modal-comprador" data-modal-toggle="popup-modal-comprador" type="button"
-                        class="role-card relative overflow-hidden rounded-2xl p-8 bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700 shadow-xl min-h-[280px] flex flex-col items-center justify-center text-center group">
+                        class="role-card relative overflow-hidden rounded-2xl p-8 bg-blue-500  shadow-xl min-h-[280px] flex flex-col items-center justify-center text-center group">
                     <div class="card-overlay absolute inset-0 bg-black/5"></div>
 
                     <div class="relative z-10 flex flex-col items-center gap-4">
@@ -119,7 +120,7 @@
 
                 <!-- Card Vendedor -->
                 <button onclick="selectRole('vendedor')" data-modal-target="popup-modal-vendedor" data-modal-toggle="popup-modal-vendedor"
-                        class="role-card relative overflow-hidden rounded-2xl p-8 bg-gradient-to-br from-slate-700 via-slate-800 to-black shadow-xl min-h-[280px] flex flex-col items-center justify-center text-center group">
+                        class="role-card relative overflow-hidden rounded-2xl p-8 bg-slate-700 shadow-xl min-h-[280px] flex flex-col items-center justify-center text-center group">
                     <div class="card-overlay absolute inset-0 bg-black/5"></div>
 
                     <div class="relative z-10 flex flex-col items-center gap-4">
@@ -150,33 +151,34 @@
                 <!--Modal de confirmação vendedor -->
                 <div id="popup-modal-vendedor" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
                     <div class="relative p-4 w-full max-w-md max-h-full">
-                        <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
-                            <button type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="popup-modal-vendedor">
+                        <div class="relative bg-white rounded-lg shadow-sm ">
+                            <button type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="popup-modal-vendedor">
                                 <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                                 </svg>
                                 <span class="sr-only">Close modal</span>
                             </button>
                             <div class="p-4 md:p-5 text-center">
-                                <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                <svg class="mx-auto mb-4 text-gray-400 w-12 h-12" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                 </svg>
-                                <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Tem certeza de que deseja continuar como vendedor?</h3>
+                                <h3 class="mb-5 text-lg font-normal text-gray-500">Tem certeza de que deseja continuar como vendedor?</h3>
                                 <!--<button data-modal-hide="popup-modal-vendedor" type="button" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
                                     Sim, continuar
                                 </button> -->
-
-                                <form method="post">
-                                    <input type="hidden" id="SelectedRole" name="SelectedRole" value="Vendedor" />
-                                    <button type="submit"
-                                            class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
-                                        Sim, continuar
+                                <div class="flex items-center justify-center gap-3">
+                                    <form method="post" class="inline-block">
+                                        <input type="hidden" id="SelectedRole" name="SelectedRole" value="Vendedor" />
+                                        <button type="submit"
+                                                class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
+                                            Sim, continuar
+                                        </button>
+                                    </form>
+                                    <button data-modal-hide="popup-modal-vendedor" type="button"
+                                            class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                                        Não, cancelar
                                     </button>
-                                </form>
-
-
-
-                                <button data-modal-hide="popup-modal-vendedor" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Não, cancelar</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -184,27 +186,30 @@
                 <!--Modal de confirmação comprador -->
                 <div id="popup-modal-comprador" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
                     <div class="relative p-4 w-full max-w-md max-h-full">
-                        <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
-                            <button type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="popup-modal-comprador">
+                        <div class="relative bg-white rounded-lg shadow-sm">
+                            <button type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="popup-modal-comprador">
                                 <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                                 </svg>
                                 <span class="sr-only">Close modal</span>
                             </button>
                             <div class="p-4 md:p-5 text-center">
-                                <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                 </svg>
-                                <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Tem certeza de que deseja continuar como comprador?</h3>
-                                <form method="post">
-                                    <input type="hidden" id="SelectedRole" name="SelectedRole" value="Comprador"/>
-                                    <button type="submit"
-                                            class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
-                                        Sim, continuar
-                                    </button>
-                                </form>
+                                <h3 class="mb-5 text-lg font-normal text-gray-500 ">Tem certeza de que deseja continuar como comprador?</h3>
+                                <div class="flex items-center justify-center gap-3">
+                                    <form method="post" class="inline-block">
+                                        <input type="hidden" id="SelectedRole" name="SelectedRole" value="Comprador"/>
+                                        <button type="submit"
+                                                class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
+                                            Sim, continuar
+                                        </button>
+                                    </form>
 
-                                <button data-modal-hide="popup-modal-comprador" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Não, cancelar</button>
+                                    <button data-modal-hide="popup-modal-comprador" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">Não, cancelar</button>
+
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -238,15 +243,6 @@
 
             // Aqui pode adicionar a lógica de redirecionamento
             console.log('Usuário selecionou:', role);
-
-            // Exemplo de redirecionamento após 1 segundo:
-            // setTimeout(() => {
-            //     if (role === 'comprador') {
-            //         window.location.href = '/Dashboard/Comprador';
-            //     } else {
-            //         window.location.href = '/Dashboard/Vendedor';
-            //     }
-            // }, 1000);
         }
     </script>
 </body>

@@ -52,18 +52,23 @@ namespace TechBayV01.Pages.choose_role
                 return RedirectToPage("/vendedor/Index"); // volta pra página com erro
             } else
             {
-                Console.WriteLine("Sucesso ao associar usuário à role.");
+                Console.WriteLine("O usuário foi adicionado à role.");
             }
 
             // Redireciona conforme a role escolhida
-            if (SelectedRole == "comprador")
+            if (SelectedRole == "Comprador")
             {
-                Console.WriteLine("Sucesso ao associar usuário à role.");
-                return RedirectToPage("/comprador");
+                Console.WriteLine("Sucesso ao associar o comprador à role.");
+                return RedirectToPage("/comprador/Index");
+            }
+            else if (SelectedRole == "Vendedor")
+            {
+                Console.WriteLine("Sucesso ao associar vendedor à role.");
+                return RedirectToPage("/vendedor/Index");
             }
             else
             {
-                Console.WriteLine("Sucesso ao associar usuário à role.");
+                Console.WriteLine("Erro ao salvar a role.");
                 return RedirectToPage("/vendedor/Index");
             }
         }
