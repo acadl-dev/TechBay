@@ -95,7 +95,6 @@ dotnet run
 
 ## 📈 Próximos Passos
 
-- Implementar CRUD de produtos para vendedores
 - Criar catálogo de produtos para compradores
 - Desenvolver carrinho de compras
 - Implementar sistema de pedidos
