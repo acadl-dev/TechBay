@@ -1,4 +1,4 @@
-# 🛒 TechBay (em produção...)
+# 🛒 TechBay (em desenvolvimento...)
 
 > **TechBay** é uma aplicação web desenvolvida com **.NET Razor Pages** que simula um e-commerce de eletrônicos.  
 O sistema permite que o usuário atue tanto como **vendedor** quanto como **comprador**, oferecendo uma experiência completa de marketplace.
